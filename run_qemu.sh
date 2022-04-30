@@ -1,3 +1,3 @@
 make
-qemu-system-x86_64 -drive file=albert_os.bin,format=raw
+qemu-system-x86_64 -s -drive file=albert_os.bin,format=raw
 make clean
