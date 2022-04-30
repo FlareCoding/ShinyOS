@@ -2,15 +2,20 @@
 [org 0x7c00]
 
 BOOTSECTOR_STACK_BOTTOM equ 0x8000
+SECTORS_TO_READ         equ 1
+KERNEL_OFFSET           equ 0x1000
+
+; Save the boot drive provided by the BIOS
+mov [BOOT_DRIVE], dl
 
 ; Setup the stack
 mov bp, BOOTSECTOR_STACK_BOTTOM
 mov sp, bp
 
 ; Read the next sectors of the disk
-mov bx, 0x9000  ; where to place the contents
-mov dh, 2       ; sectors to read
-                ; the bios sets 'dl' for our boot disk number
+mov bx, KERNEL_OFFSET       ; where to place the contents
+mov dh, SECTORS_TO_READ     ; sectors to read
+mov dl, [BOOT_DRIVE]        ; boot disk number
 call _BootsectorLoadDisk
 
 ; Print log message 'bootsector started'
@@ -47,6 +52,8 @@ _BootsectorPrintChecksum:
 BOOTSECTOR_CHECKSUM_MSG     db 'Bootsector checksum   : ', 0
 BOOTSECTOR_CHECKSUM         dw 0x4554
 
+BOOT_DRIVE db 0
+
 %include "bootsector/bootsector_print_utils.asm"
 %include "bootsector/bootsector_disk_utils.asm"
 %include "bootsector/bootsector_gdt.asm"
@@ -57,8 +64,3 @@ times 510-($-$$) db 0
 
 ; Bootloader signature
 dw 0xAA55
-
-; boot sector = sector 1 of cyl 0 of head 0 of hdd 0
-; from now on = sector 2 ...
-times 256 dw 0xdada ; sector 2 = 512 bytes
-times 256 dw 0xface ; sector 3 = 512 bytes
