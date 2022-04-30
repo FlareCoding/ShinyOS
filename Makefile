@@ -6,12 +6,12 @@ HEADERS = $(wildcard kernel/*.h drivers/*.h)
 
 OBJ = ${C_SOURCES:.c=.o}
 
-CFLAGS = -g
+CFLAGS = -g -I ./
 
 KERNEL_OFFSET = 0x8000
 
 albert_os: bootsector.bin kernel.bin kernel.elf
-	cat $^ > $@.bin
+	cat bootsector.bin kernel.bin > $@.bin
 
 bootsector.bin: bootsector/bootsector.asm
 	nasm -f bin bootsector/bootsector.asm -o bootsector.bin

@@ -2,7 +2,7 @@
 [org 0x7c00]
 
 BOOTSECTOR_STACK_BOTTOM equ 0x8000
-SECTORS_TO_READ         equ 1
+SECTORS_TO_READ         equ 2
 KERNEL_LOADER_OFFSET    equ 0x8000
 
 ; Save the boot drive provided by the BIOS
