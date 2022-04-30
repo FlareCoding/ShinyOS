@@ -9,14 +9,14 @@ albert_os: bootsector.bin kernel.bin
 bootsector.bin: bootsector/bootsector.asm
 	nasm -f bin bootsector/bootsector.asm -o bootsector.bin
 
-kernel.bin: kernel_entry.o kernel.o
-	$(LD) -o $@ -Ttext $(KERNEL_OFFSET) $^ --oformat binary
-
-kernel_entry.o: kernel/kernel_entry.asm
-	nasm $< -f elf64 -o $@
+kernel.bin: bootsector_kernel_loader.o kernel.o
+	$(LD) -o $@ -Ttext $(KERNEL_OFFSET) $^ --entry _kmain --oformat binary
 
 kernel.o: kernel/kernel.c
 	$(CC) -ffreestanding -mno-red-zone -m64 -c $< -o $@
+
+bootsector_kernel_loader.o: bootsector/bootsector_kernel_loader.asm
+	nasm $< -f elf64 -o $@
 
 clean:
 	rm -rf *.bin *.o
