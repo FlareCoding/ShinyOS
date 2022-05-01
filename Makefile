@@ -30,4 +30,4 @@ bootsector_kernel_loader.o: bootsector/bootsector_kernel_loader.asm
 	${CC} ${CFLAGS} -ffreestanding -mno-red-zone -m64 -c $< -o $@
 
 clean:
-	rm -rf *.bin *.o kernel/*.o
+	rm -rf *.bin *.elf *.o kernel/*.o drivers/*.o
