@@ -84,6 +84,25 @@ int32_t kPrintChar(char c, int32_t col, int32_t row, int8_t attribs)
     }
     }
 
+    // Checking if text needs to be scrolled up
+    if (offset >= VGA_SCREEN_MAX_CURSOR_INDEX * 2) {
+        uint8_t*    copy_start_addr = (uint8_t*)VGA_MEMORY_ADDRESS + (VGA_SCREEN_MAX_COLS * 2);
+        size_t      copy_size = (VGA_SCREEN_MAX_CURSOR_INDEX - VGA_SCREEN_MAX_COLS) * 2;
+
+        // Copy all the lines one line above
+        kCopyMemory((void*)VGA_MEMORY_ADDRESS, copy_start_addr, copy_size);
+
+        // Empty out the last line
+        uint8_t* last_line = (uint8_t*)VGA_MEMORY_ADDRESS + kGetVGACursorOffsetFromColRow(0, VGA_SCREEN_MAX_ROWS - 1);
+        for (size_t i = 0; i < VGA_SCREEN_MAX_COLS * 2; i += 2)
+        {
+            last_line[i] = ' ';
+            last_line[i + 1] = VGA_COLOR_WHITE_ON_BLACK;
+        }
+
+        offset -= 2 * VGA_SCREEN_MAX_COLS;
+    }
+
     // Update the cursor offset
     kSetVGACursorOffset(offset);
 

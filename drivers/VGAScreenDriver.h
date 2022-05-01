@@ -1,16 +1,17 @@
 #ifndef VGA_SCREEN_DRIVER_H
 #define VGA_SCREEN_DRIVER_H
-#include <kernel/typedefs.h>
+#include <kernel/KernelMemory.h>
 #include "PortIo.h"
 
-#define VGA_MEMORY_ADDRESS             0xb8000
-#define VGA_SCREEN_MAX_ROWS            25
-#define VGA_SCREEN_MAX_COLS            80
-#define VGA_COLOR_WHITE_ON_BLACK       0x0F
-#define VGA_COLOR_RED_ON_WHITE         0xF4
+#define VGA_MEMORY_ADDRESS              0xb8000
+#define VGA_SCREEN_MAX_ROWS             25
+#define VGA_SCREEN_MAX_COLS             80
+#define VGA_SCREEN_MAX_CURSOR_INDEX     2000
+#define VGA_COLOR_WHITE_ON_BLACK        0x0F
+#define VGA_COLOR_RED_ON_WHITE          0xF4
 
-#define IO_PORT_VGA_SCREEN_CTRL 0x3D4
-#define IO_PORT_VGA_SCREEN_DATA 0x3D5
+#define IO_PORT_VGA_SCREEN_CTRL         0x3D4
+#define IO_PORT_VGA_SCREEN_DATA         0x3D5
 
 #define VGA_FOREGROUND_BLACK            0x00
 #define VGA_FOREGROUND_BLUE             0x01

@@ -4,6 +4,7 @@
 // Byte (1 byte)
 typedef char                byte_t;
 typedef char                int8_t;
+typedef unsigned char       uchar_t;
 typedef unsigned char       ubyte_t;
 typedef unsigned char       uint8_t;
 
@@ -22,5 +23,6 @@ typedef unsigned int        uint32_t;
 // Qword (8 bytes)
 typedef long long           int64_t;
 typedef unsigned long long  uint64_t;
+typedef unsigned long long  size_t;
 
 #endif
