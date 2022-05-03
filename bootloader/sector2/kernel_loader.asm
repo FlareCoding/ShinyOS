@@ -1,5 +1,3 @@
-KERNEL_OFFSET equ 0x8000
-
 ; Protected Mode <=> PM
 [bits 32]
 
@@ -39,10 +37,10 @@ _PMStart:
 
 PROTECTED_MODE_ENTERED_MSG db 'Entered protected mode (32bits)', 0
 
-%include "bootsector/bootsector_print_utils.asm"
-%include "bootsector/bootsector_gdt.asm"
-%include "bootsector/bootsector_cpuid.asm"
-%include "bootsector/bootsector_paging.asm"
+%include "bootloader/bootsector/bootloader_print_utils.asm"
+%include "bootloader/bootsector/bootloader_gdt.asm"
+%include "bootloader/sector2/cpuid.asm"
+%include "bootloader/sector2/paging.asm"
 
 [bits 64]
 [extern _kmain]
@@ -52,6 +50,9 @@ _LMStart:
     mov rax, 0x0F200F200F200F20
     mov ecx, 500
     rep stosq
+
+    mov byte [0xb8000], 'S'
+    mov byte [0xb8001], 0x0F
 
     call _kmain
     jmp $

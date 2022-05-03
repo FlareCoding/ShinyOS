@@ -9,25 +9,27 @@ OBJ = ${C_SOURCES:.c=.o}
 CFLAGS = -g -I ./
 
 KERNEL_OFFSET = 0x8000
+KERNEL_ENTRY = _kmain
 
-albert_os: bootsector.bin kernel.bin kernel.elf
-	cat bootsector.bin kernel.bin > $@.bin
+all: debug
 
-bootsector.bin: bootsector/bootsector.asm
-	nasm -f bin bootsector/bootsector.asm -o bootsector.bin
+debug: os-image
+	dd if=os-image.bin of=os-image.img bs=512 conv=notrunc
 
-kernel.bin: bootsector_kernel_loader.o ${OBJ}
-	$(LD) -o $@ -Ttext $(KERNEL_OFFSET) $^ --entry _kmain --oformat binary
+os-image: bootloader.bin kernel.bin
+	cat bootloader.bin kernel.bin > $@.bin
 
-# Used for debugging purposes
-kernel.elf: bootsector_kernel_loader.o ${OBJ}
-	$(LD) -o $@ -Ttext $(KERNEL_OFFSET) $^
+bootloader.bin: bootloader/bootsector/bootloader.asm
+	nasm -f bin $^ -o $@
 
-bootsector_kernel_loader.o: bootsector/bootsector_kernel_loader.asm
+kernel.bin: kernel_loader.o ${OBJ}
+	$(LD) -o $@ -Ttext $(KERNEL_OFFSET) $^ --entry $(KERNEL_ENTRY) --oformat binary
+
+kernel_loader.o: bootloader/sector2/kernel_loader.asm
 	nasm $< -f elf64 -o $@
 
-%.o: %.c ${HEADERS}
+%.o: kernel/%.c drivers/%.c ${HEADERS}
 	${CC} ${CFLAGS} -ffreestanding -mno-red-zone -m64 -c $< -o $@
 
 clean:
-	rm -rf *.bin *.elf *.o kernel/*.o drivers/*.o
+	rm -rf *.bin *.img *.o kernel/*.o drivers/*.o

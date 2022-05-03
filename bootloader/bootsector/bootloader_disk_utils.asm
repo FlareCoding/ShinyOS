@@ -10,7 +10,7 @@ DISK_READ_SECTORS equ 0x02
 ; Resources:
 ;       https://stanislavs.org/helppc/int_13-2.html
 ;
-_BootsectorLoadDisk:
+_BootloaderLoadDisk:
     pusha
 
     ; Save the provided number of sectors
@@ -24,16 +24,16 @@ _BootsectorLoadDisk:
     mov dh, 0                   ; head number = 0
     
     int BIOS_DISK_INTERRUPT     ; call the BIOS interrupt
-    jc _BootsectorDiskError     ; the carry flag is set to 1 on error
+    jc _BootloaderDiskError     ; the carry flag is set to 1 on error
 
     pop dx
     cmp al, dh                  ; BIOS also sets 'al' to the # of sectors read. Compare it.
-    jne _BootsectorSectorsError
+    jne _BootloaderSectorsError
 
     popa
     ret
 
-_BootsectorDiskError:
+_BootloaderDiskError:
     mov si, DISK_ERROR_MSG
     call _BIOSPrintString
 
@@ -43,7 +43,7 @@ _BootsectorDiskError:
 
     jmp $
 
-_BootsectorSectorsError:
+_BootloaderSectorsError:
     mov si, SECTORS_ERROR_MSG
     call _BIOSPrintString
 

@@ -30,3 +30,4 @@ _PMDetectLongMode:
 
 _PMHalt:
     hlt
+    
