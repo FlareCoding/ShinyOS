@@ -137,3 +137,25 @@ void kPrint(const char* buffer)
 {
     kPrintColRow(buffer, -1, -1);
 }
+
+void kPrintHex(uint64_t val)
+{
+    char hex_string_buffer[128];
+
+    uint64_t* val_ptr = &val;
+    uint8_t size = sizeof(uint64_t) * 2 - 1;
+
+    for (uint8_t i = 0; i < size; i++)
+    {
+        uint8_t* ptr = ((uint8_t*)val_ptr + i);
+        uint8_t tmp = ((*ptr & 0xF0) >> 4);
+        hex_string_buffer[size - (i * 2 + 1)] = tmp + (tmp > 9 ? 55 : 48);
+        tmp = ((*ptr & 0x0F));
+        hex_string_buffer[size - (i * 2)] = tmp + (tmp > 9 ? 55 : 48);
+    }
+
+    hex_string_buffer[size + 1] = '\0';
+
+    kPrint("0x");
+    kPrint(hex_string_buffer);
+}

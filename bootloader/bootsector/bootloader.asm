@@ -3,7 +3,7 @@
 
 ; Offsets
 BOOTSECTOR_STACK_BOTTOM equ 0x8000
-SECTORS_TO_READ         equ 5
+SECTORS_TO_READ         equ 19
 KERNEL_LOADER_OFFSET    equ 0x8000
 
 section .text

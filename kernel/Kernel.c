@@ -1,6 +1,12 @@
 #include <drivers/VGAScreenDriver.h>
+#include <kernel/Interrupts.h>
 
 void _kmain() {
+    // Initialize IDT and setup interrupt service routines
+    kInitializeIDT();
+
+    //kSetInterruptServiceRoutine(0, div_by_0_handler, TRAP_GATE_FLAGS);
+
     kClearVGAScreenBuffer();
     kPrintColRow("X", 1, 6);
     kPrintColRow("This text spans multiple lines", 75, 10);
