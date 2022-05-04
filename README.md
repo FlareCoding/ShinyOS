@@ -1,1 +1,1 @@
-# AlbertOS
+# ShinyOS
