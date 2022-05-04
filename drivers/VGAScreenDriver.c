@@ -56,7 +56,7 @@ int32_t kPrintChar(char c, int32_t col, int32_t row, int8_t attribs)
 
     // Color attribs
     if (!attribs)
-        attribs = VGA_COLOR_WHITE_ON_BLACK;
+        attribs = VGA_DEFAULT_COLOR;
 
     // Cursor offset/position
     int32_t offset = 0;
@@ -158,4 +158,20 @@ void kPrintHex(uint64_t val)
 
     kPrint("0x");
     kPrint(hex_string_buffer);
+}
+
+void kBackspace(int32_t count)
+{
+    if (count == -1 || count == 0)
+        count = 1;
+
+    int32_t new_offset = kGetVGACursorOffset() - count;
+    kSetVGACursorOffset(new_offset);
+
+    for (int32_t i = 0; i < count; i++)
+    {
+        kPrintChar(' ', -1, -1, VGA_DEFAULT_COLOR);
+    }
+
+    kSetVGACursorOffset(new_offset);
 }

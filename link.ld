@@ -12,6 +12,7 @@ INPUT
 
     drivers/PortIo.o
     drivers/VGAScreenDriver.o
+    drivers/KeyboardDriver.o
 )
 
 OUTPUT

@@ -37,25 +37,14 @@ typedef struct {
     uint32_t ss;        // Special segment
 } __attribute__((packed)) InterruptFrame_t;
 
-// Default exception handler WITHOUT the error code
-__attribute__((interrupt))
-void kDefaultExceptionHandler(InterruptFrame_t* interrupt_frame);
-
-// Default exception handler WITH the error code
-__attribute__((interrupt))
-void kDefaultExceptionHandlerErrCode(InterruptFrame_t* interrupt_frame, interrupt_error_code_t error_code);
-
-// Default interrupt handler
-__attribute__((interrupt))
-void kDefaultInterruptHandler(InterruptFrame_t* interrupt_frame);
-
 // Adds an interrupt service routine to the IDT
 void kSetInterruptServiceRoutine(uint8_t isr_index, void* isr, uint8_t flags);
 
 // Sets up the interrupt descriptor table
 void kInitializeIDT();
 
-__attribute__ ((interrupt))
-void div_by_0_handler(InterruptFrame_t* frame);
+// Specific interrupt service routines
+__attribute__((interrupt))
+void kKeyboardISR(InterruptFrame_t* interrupt_frame);
 
 #endif

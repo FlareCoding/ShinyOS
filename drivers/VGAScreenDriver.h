@@ -47,7 +47,7 @@
 #define VGA_BACKGROUND_BLINKING_YELLOW  0xE0
 #define VGA_BACKGROUND_BLINKING_WHITE   0xF0
 
-#define VGA_DEFAULT_COLOR (VGA_BACKGROUND_BLACK | VGA_FOREGROUND_CYAN)
+#define VGA_DEFAULT_COLOR (VGA_BACKGROUND_BLACK | VGA_FOREGROUND_WHITE)
 
 int32_t     kGetVGACursorOffset();
 void        kSetVGACursorOffset(int32_t offset);
@@ -64,5 +64,7 @@ void        kPrintColRow(const char* buffer, int32_t col, int32_t row);
 void        kPrint(const char* buffer);
 
 void        kPrintHex(uint64_t val);
+
+void        kBackspace(int32_t count);
 
 #endif

@@ -27,7 +27,7 @@ kernel.bin: kernel_loader.o ${OBJ}
 
 # Used for debugging purposes
 kernel.elf: kernel_loader.o ${OBJ}
-	$(LD) -T link.ld
+	$(LD) -T link.ld -o kernel.elf
 
 kernel_loader.o: bootloader/sector2/kernel_loader.asm
 	nasm $< -f elf64 -o $@
@@ -39,4 +39,4 @@ kernel/Interrupts.o: kernel/Interrupts.c
 	${CC} ${CFLAGS} -c $< -o $@
 
 clean:
-	rm -rf *.bin *.img *.o kernel/*.o drivers/*.o
+	rm -rf *.bin *.img *.elf *.o kernel/*.o drivers/*.o

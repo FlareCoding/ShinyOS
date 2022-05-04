@@ -1,1 +1,1 @@
-gdb -ex "target remote localhost:1234" -ex "symbol-file kernel.elf" -ex "b _kmain" -ex "source gdb_layout.gdb" -ex "continue"
+gdb -ex "target remote localhost:1234" -ex "symbol-file kernel.elf" -ex "b 0x81A8" -ex "source gdb-layout.gdb" -ex "continue"

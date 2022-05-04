@@ -51,8 +51,5 @@ _LMStart:
     mov ecx, 500
     rep stosq
 
-    mov byte [0xb8000], 'S'
-    mov byte [0xb8001], 0x0F
-
     call _kmain
     jmp $

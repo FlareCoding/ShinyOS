@@ -1,20 +1,69 @@
 #include <drivers/VGAScreenDriver.h>
+#include <drivers/KeyboardDriver.h>
 #include <kernel/Interrupts.h>
+
+int g_ShiftPressed = 0;
+
+void _keyboard_event_callback_handler(uint8_t scan_code, uint8_t chr);
 
 void _kmain() {
     // Initialize IDT and setup interrupt service routines
     kInitializeIDT();
 
-    //kSetInterruptServiceRoutine(0, div_by_0_handler, TRAP_GATE_FLAGS);
+    // Register the keyboard event callback handler
+    kSetKeyboardEventCallback(_keyboard_event_callback_handler);
 
     kClearVGAScreenBuffer();
-    kPrintColRow("X", 1, 6);
-    kPrintColRow("This text spans multiple lines", 75, 10);
-    kPrintColRow("There is a line\nbreak", 0, 20);
-    kPrint("There is a line\nbreak");
-    kPrintColRow("What happens when we run out of space?", 45, 24);
-    kPrint("\nNew Hello World!\nWow\nIt scrolls!\n");
-    kPrint("r");
-    kPrint("a");
-    kPrint("x");
+    kPrintHex(0x4554);
+    kPrint("\n");
 }
+
+void _keyboard_event_callback_handler(uint8_t scan_code, uint8_t chr)
+{
+    if (chr)
+    {
+        if (g_ShiftPressed)
+            chr -= 32;
+
+        kPrintChar(chr, -1, -1, VGA_DEFAULT_COLOR);
+    }
+    else
+    {
+        switch (scan_code)
+        {
+        case OHNOS_KEYCODE_BACKSPACE:
+        {
+            kBackspace(1);
+            break;
+        }
+        case OHNOS_KEYCODE_LSHIFT_PRESSED:
+        {
+            g_ShiftPressed = 1;
+            break; 
+        }
+        case OHNOS_KEYCODE_LSHIFT_RELEASED:
+        {
+            g_ShiftPressed = 0;
+            break;
+        }
+        case OHNOS_KEYCODE_RSHIFT_PRESSED:
+        {
+            g_ShiftPressed = 1;
+            break;
+        }
+        case OHNOS_KEYCODE_RSHIFT_RELEASED:
+        {
+            g_ShiftPressed = 0;
+            break;
+        }
+        case OHNOS_KEYCODE_RETURN:
+        {
+            kPrint("\n");
+            break;
+        }
+        default:
+            break;
+        }
+    }
+}
+
