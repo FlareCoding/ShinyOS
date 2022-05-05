@@ -22,7 +22,7 @@ os-image: bootloader.bin kernel.bin
 bootloader.bin: bootloader/bootsector/bootloader.asm
 	nasm -f bin $^ -o $@
 
-kernel.bin: kernel_loader.o ${OBJ}
+kernel.bin: kernel_loader.o kernel/Interrupts.o ${OBJ}
 	$(LD) -T link.ld
 
 # Used for debugging purposes
@@ -32,11 +32,11 @@ kernel.elf: kernel_loader.o ${OBJ}
 kernel_loader.o: bootloader/sector2/kernel_loader.asm
 	nasm $< -f elf64 -o $@
 
-kernel/Interrupts.o: kernel/Interrupts.c
-	${CC} ${CFLAGS} -mgeneral-regs-only -c $< -o $@
-
 %.o: kernel/%.c drivers/%.c ${HEADERS}
 	${CC} ${CFLAGS} -c $< -o $@
+
+kernel/Interrupts.o: kernel/Interrupts.asm
+	nasm $< -f elf64 -o $@
 
 clean:
 	rm -rf *.bin *.img *.elf *.o kernel/*.o drivers/*.o

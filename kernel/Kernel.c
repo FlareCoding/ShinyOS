@@ -1,6 +1,6 @@
 #include <drivers/VGAScreenDriver.h>
 #include <drivers/KeyboardDriver.h>
-#include <kernel/Interrupts.h>
+#include "Idt.h"
 
 int g_ShiftPressed = 0;
 
@@ -11,11 +11,13 @@ void _kmain() {
     kInitializeIDT();
 
     // Register the keyboard event callback handler
-    kSetKeyboardEventCallback(_keyboard_event_callback_handler);
+    //kSetKeyboardEventCallback(_keyboard_event_callback_handler);
 
     kClearVGAScreenBuffer();
     kPrintHex(0x4554);
     kPrint("\n");
+
+    __asm__ __volatile__("int $8");
 }
 
 void _keyboard_event_callback_handler(uint8_t scan_code, uint8_t chr)

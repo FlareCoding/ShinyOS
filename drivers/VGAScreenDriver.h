@@ -63,6 +63,7 @@ int32_t     kPrintChar(char c, int32_t col, int32_t row, int8_t attribs);
 void        kPrintColRow(const char* buffer, int32_t col, int32_t row);
 void        kPrint(const char* buffer);
 
+void        kPrintInt(int64_t val);
 void        kPrintHex(uint64_t val);
 
 void        kBackspace(int32_t count);

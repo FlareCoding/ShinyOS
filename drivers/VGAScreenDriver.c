@@ -138,6 +138,22 @@ void kPrint(const char* buffer)
     kPrintColRow(buffer, -1, -1);
 }
 
+void kPrintInt(int64_t val)
+{
+    int64_t n = val;
+
+    if (val < 0)
+    {
+       kPrintChar('-', -1, -1, VGA_DEFAULT_COLOR);
+       val = -val;
+    }
+
+    if (val > 9)
+        kPrintInt(val / 10);
+
+    kPrintChar('0' + (n % 10), -1, -1, VGA_DEFAULT_COLOR);
+}
+
 void kPrintHex(uint64_t val)
 {
     char hex_string_buffer[128];
