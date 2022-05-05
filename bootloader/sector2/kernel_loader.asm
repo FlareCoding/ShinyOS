@@ -1,6 +1,8 @@
 ; Protected Mode <=> PM
 [bits 32]
 
+KERNEL_STACK_LOCATION equ 0x80000
+
 _PMInit:
     mov ax, DATA_SEG ; Update the segment registers
     mov ds, ax
@@ -9,7 +11,7 @@ _PMInit:
     mov fs, ax
     mov gs, ax
 
-    mov ebp, 0x9000 ; Move the base and stack pointers to the top of the free space
+    mov ebp, KERNEL_STACK_LOCATION ; Move the base and stack pointers to the top of the free space
     mov esp, ebp
 
     jmp _PMStart

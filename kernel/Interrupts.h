@@ -37,14 +37,83 @@ typedef struct {
     uint32_t ss;        // Special segment
 } __attribute__((packed)) InterruptFrame_t;
 
-// Adds an interrupt service routine to the IDT
-void kSetInterruptServiceRoutine(uint8_t isr_index, void* isr, uint8_t flags);
-
 // Sets up the interrupt descriptor table
 void kInitializeIDT();
 
 // Specific interrupt service routines
 __attribute__((interrupt))
 void kKeyboardISR(InterruptFrame_t* interrupt_frame);
+
+// Universal IRQ handler
+void kInterruptRequestHandler(InterruptFrame_t* frame, uint32_t intno);
+
+// CPU Exception Service Routines
+__attribute__((interrupt)) void kISR0(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR1(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR2(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR3(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR4(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR5(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR6(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR7(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR8(InterruptFrame_t* frame, interrupt_error_code_t errno);
+__attribute__((interrupt)) void kISR9(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR10(InterruptFrame_t* frame, interrupt_error_code_t errno);
+__attribute__((interrupt)) void kISR11(InterruptFrame_t* frame, interrupt_error_code_t errno);
+__attribute__((interrupt)) void kISR12(InterruptFrame_t* frame, interrupt_error_code_t errno);
+__attribute__((interrupt)) void kISR13(InterruptFrame_t* frame, interrupt_error_code_t errno);
+__attribute__((interrupt)) void kISR14(InterruptFrame_t* frame, interrupt_error_code_t errno);
+__attribute__((interrupt)) void kISR15(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR16(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR17(InterruptFrame_t* frame, interrupt_error_code_t errno);
+__attribute__((interrupt)) void kISR18(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR19(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR20(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR21(InterruptFrame_t* frame, interrupt_error_code_t errno);
+__attribute__((interrupt)) void kISR22(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR23(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR24(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR25(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR26(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR27(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR28(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR29(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR30(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kISR31(InterruptFrame_t* frame);
+
+// Hardware Interrupts
+__attribute__((interrupt)) void kIRQ0(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ1(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ2(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ3(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ4(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ5(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ6(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ7(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ8(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ9(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ10(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ11(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ12(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ13(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ14(InterruptFrame_t* frame);
+__attribute__((interrupt)) void kIRQ15(InterruptFrame_t* frame);
+
+#define IRQ0 32
+#define IRQ1 33
+#define IRQ2 34
+#define IRQ3 35
+#define IRQ4 36
+#define IRQ5 37
+#define IRQ6 38
+#define IRQ7 39
+#define IRQ8 40
+#define IRQ9 41
+#define IRQ10 42
+#define IRQ11 43
+#define IRQ12 44
+#define IRQ13 45
+#define IRQ14 46
+#define IRQ15 47
 
 #endif

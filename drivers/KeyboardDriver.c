@@ -30,8 +30,4 @@ void kHandleKeyboardInterrupt()
 
     if (g_KeyboardEventCallback != 0)
         g_KeyboardEventCallback(scan_code, chr);
-
-    // Specify that we finished handling the interrupt.
-    kPortByteOut(0x20, 0x20);
-    kPortByteOut(0xA0, 0x20);
 }
