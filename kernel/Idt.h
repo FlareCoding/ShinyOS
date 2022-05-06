@@ -36,7 +36,15 @@ typedef struct {
     uint64_t rip, cs, eflags, usersp, ss;
 } __attribute__((packed)) InterruptFrame_t;
 
+typedef struct {
+    uint64_t rip, cs, eflags, rsp, ss;
+} __attribute__((packed)) NakedInterruptFrame_t;
+
 void kKernelIsrHandler(InterruptFrame_t frame);
+void kKernelIrqHandler(NakedInterruptFrame_t* frame, uint8_t int_no);
+
+typedef void(*UserIrqHandler_t)(NakedInterruptFrame_t*, uint8_t int_no);
+void kRegisterUserIrqHandler(uint8_t entry, UserIrqHandler_t handler);
 
 void kSetIsrHandler(uint8_t isr_index, void* isr, uint8_t flags);
 
@@ -75,5 +83,53 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+
+__attribute__((interrupt)) void kIrq0(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq1(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq2(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq3(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq4(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq5(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq6(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq7(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq8(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq9(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq10(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq11(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq12(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq13(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq14(NakedInterruptFrame_t* frame);
+__attribute__((interrupt)) void kIrq15(NakedInterruptFrame_t* frame);
+
+#define IRQ0  32
+#define IRQ1  33
+#define IRQ2  34
+#define IRQ3  35
+#define IRQ4  36
+#define IRQ5  37
+#define IRQ6  38
+#define IRQ7  39
+#define IRQ8  40
+#define IRQ9  41
+#define IRQ10 42
+#define IRQ11 43
+#define IRQ12 44
+#define IRQ13 45
+#define IRQ14 46
+#define IRQ15 47
+
+// PIC Chip Control
+#define MASTER_PIC_COMMAND  0x20
+#define MASTER_PIC_DATA     0x21
+
+#define SLAVE_PIC_COMMAND   0xA0
+#define SLAVE_PIC_DATA      0xA1
+
+// Initialization Control Word
+#define ICW1_INIT           0x10
+#define ICW1_ICW4           0x01
+#define ICW4_8086           0x01
+
+void kRemapPIC();
 
 #endif

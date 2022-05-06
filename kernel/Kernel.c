@@ -10,14 +10,15 @@ void _kmain() {
     // Initialize IDT and setup interrupt service routines
     kInitializeIDT();
 
-    // Register the keyboard event callback handler
-    //kSetKeyboardEventCallback(_keyboard_event_callback_handler);
+    // Setup keyboard interrupt handler
+    kRegisterUserIrqHandler(IRQ1, kHandleKeyboardInterrupt);
+
+    // Register a kernel key event callback
+    kKeyboardDriverRegisterKeyEventCallback(_keyboard_event_callback_handler);
 
     kClearVGAScreenBuffer();
-    kPrintHex(0x4554);
+    kPrintHex((uint64_t)&_kmain);
     kPrint("\n");
-
-    __asm__ __volatile__("int $8");
 }
 
 void _keyboard_event_callback_handler(uint8_t scan_code, uint8_t chr)

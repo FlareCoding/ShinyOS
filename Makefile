@@ -26,11 +26,14 @@ kernel.bin: kernel_loader.o kernel/Interrupts.o ${OBJ}
 	$(LD) -T link.ld
 
 # Used for debugging purposes
-kernel.elf: kernel_loader.o ${OBJ}
-	$(LD) -T link.ld -o kernel.elf
+kernel.elf: kernel_loader.o kernel/Interrupts.o ${OBJ}
+	$(LD) -T debug-elf-link.ld
 
 kernel_loader.o: bootloader/sector2/kernel_loader.asm
 	nasm $< -f elf64 -o $@
+
+kernel/Idt.o: kernel/Idt.c
+	${CC} ${CFLAGS} -mgeneral-regs-only -c $< -o $@
 
 %.o: kernel/%.c drivers/%.c ${HEADERS}
 	${CC} ${CFLAGS} -c $< -o $@

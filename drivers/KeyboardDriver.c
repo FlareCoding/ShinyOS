@@ -1,6 +1,8 @@
 #include "KeyboardDriver.h"
 #include "VGAScreenDriver.h"
 
+KernelKeyEventCallback_t g_KeyEventCallback = 0;
+
 const char g_KeyboardScanCodes[58] = {
     0, 0,
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -13,14 +15,12 @@ const char g_KeyboardScanCodes[58] = {
     0, '*', 0, ' '
 };
 
-static keyboard_event_callback_t g_KeyboardEventCallback = 0;
-
-void kSetKeyboardEventCallback(keyboard_event_callback_t callback)
+void kKeyboardDriverRegisterKeyEventCallback(KernelKeyEventCallback_t callback)
 {
-    g_KeyboardEventCallback = callback;
+    g_KeyEventCallback = callback;
 }
 
-void kHandleKeyboardInterrupt()
+void kHandleKeyboardInterrupt(NakedInterruptFrame_t* frame, uint8_t int_no)
 {
     uint8_t scan_code = kPortByteIn(0x60);
     uint8_t chr = 0;
@@ -28,6 +28,6 @@ void kHandleKeyboardInterrupt()
     if (scan_code < 0x3A)
         chr = g_KeyboardScanCodes[scan_code];
 
-    if (g_KeyboardEventCallback != 0)
-        g_KeyboardEventCallback(scan_code, chr);
+    if (g_KeyEventCallback != 0)
+        g_KeyEventCallback(scan_code, chr);
 }
