@@ -4,7 +4,7 @@
 
 int g_ShiftPressed = 0;
 
-void _keyboard_event_callback_handler(uint8_t scan_code, uint8_t chr);
+void _keyboard_event_callback_handler(KbdEvent_t evt);
 
 void _kmain() {
     // Initialize IDT and setup interrupt service routines
@@ -21,45 +21,28 @@ void _kmain() {
     kPrint("\n");
 }
 
-void _keyboard_event_callback_handler(uint8_t scan_code, uint8_t chr)
+void _keyboard_event_callback_handler(KbdEvent_t evt)
 {
-    if (chr)
+    if (evt.EventType != KEYBOARD_EVENT_KEYPRESS)
+        return;
+
+    if (evt.CharValue)
     {
         if (g_ShiftPressed)
-            chr -= 32;
+            evt.CharValue -= 32;
 
-        kPrintChar(chr, -1, -1, VGA_DEFAULT_COLOR);
+        kPrintChar(evt.CharValue, -1, -1, VGA_DEFAULT_COLOR);
     }
     else
     {
-        switch (scan_code)
+        switch (evt.ScanCode)
         {
-        case OHNOS_KEYCODE_BACKSPACE:
+        case KEYCODE_BACKSPACE:
         {
             kBackspace(1);
             break;
         }
-        case OHNOS_KEYCODE_LSHIFT_PRESSED:
-        {
-            g_ShiftPressed = 1;
-            break; 
-        }
-        case OHNOS_KEYCODE_LSHIFT_RELEASED:
-        {
-            g_ShiftPressed = 0;
-            break;
-        }
-        case OHNOS_KEYCODE_RSHIFT_PRESSED:
-        {
-            g_ShiftPressed = 1;
-            break;
-        }
-        case OHNOS_KEYCODE_RSHIFT_RELEASED:
-        {
-            g_ShiftPressed = 0;
-            break;
-        }
-        case OHNOS_KEYCODE_RETURN:
+        case KEYCODE_RETURN:
         {
             kPrint("\n");
             break;

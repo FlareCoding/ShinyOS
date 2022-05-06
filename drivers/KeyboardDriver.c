@@ -24,10 +24,19 @@ void kHandleKeyboardInterrupt(NakedInterruptFrame_t* frame, uint8_t int_no)
 {
     uint8_t scan_code = kPortByteIn(0x60);
     uint8_t chr = 0;
+    int is_release = scan_code >= 0x80;
+
+    if (is_release)
+        scan_code -= 0x80;
 
     if (scan_code < 0x3A)
         chr = g_KeyboardScanCodes[scan_code];
 
+    KbdEvent_t kbd_event = { 0 };
+    kbd_event.EventType = is_release ? KEYBOARD_EVENT_KEYRELEASE : KEYBOARD_EVENT_KEYPRESS;
+    kbd_event.ScanCode = scan_code;
+    kbd_event.CharValue = chr;
+
     if (g_KeyEventCallback != 0)
-        g_KeyEventCallback(scan_code, chr);
+        g_KeyEventCallback(kbd_event);
 }
