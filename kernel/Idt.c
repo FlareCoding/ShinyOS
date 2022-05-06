@@ -78,13 +78,9 @@ void kKernelIsrHandler(InterruptFrame_t frame) {
 
 void kKernelIrqHandler(NakedInterruptFrame_t* frame, uint8_t int_no)
 {
-    if (int_no == IRQ1) {
-        kPortByteIn(0x60);
-    }
-
     // Call the user handler if one exists
     if (g_UserIrqHandlers[int_no - IRQ0] != 0) {
-        UserIrqHandler_t user_handler = g_UserIrqHandlers[IRQ1 - IRQ0];
+        UserIrqHandler_t user_handler = g_UserIrqHandlers[int_no - IRQ0];
         user_handler(frame, int_no);
     }
 

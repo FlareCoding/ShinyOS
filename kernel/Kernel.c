@@ -1,6 +1,6 @@
 #include <drivers/VGAScreenDriver.h>
 #include <drivers/KeyboardDriver.h>
-#include "Idt.h"
+#include "SystemTimer.h"
 
 int g_ShiftPressed = 0;
 
@@ -10,7 +10,8 @@ void _kmain() {
     // Initialize IDT and setup interrupt service routines
     kInitializeIDT();
 
-    // Setup keyboard interrupt handler
+    // Setup user IRQ handlers
+    kRegisterUserIrqHandler(IRQ0, kHandleSystemClockInterrupt);
     kRegisterUserIrqHandler(IRQ1, kHandleKeyboardInterrupt);
 
     // Register a kernel key event callback
