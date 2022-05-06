@@ -3,9 +3,10 @@
 #include <kernel/Idt.h>
 
 #define KEYCODE_BACKSPACE   0xE
+#define KEYCODE_RETURN      0x1C
 #define KEYCODE_LSHIFT      0x2A
 #define KEYCODE_RSHIFT      0x36
-#define KEYCODE_RETURN      0x1C
+#define KEYCODE_CAPSLOCK    0x3A
 
 #define KEYBOARD_EVENT_KEYPRESS   1
 #define KEYBOARD_EVENT_KEYRELEASE 2
