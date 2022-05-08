@@ -1,6 +1,8 @@
 #ifndef TYPEDEFS_H
 #define TYPEDEFS_H
 
+#define NULL                0
+
 // Byte (1 byte)
 typedef char                byte_t;
 typedef char                int8_t;
@@ -24,5 +26,10 @@ typedef unsigned int        uint32_t;
 typedef long long           int64_t;
 typedef unsigned long long  uint64_t;
 typedef unsigned long long  size_t;
+
+// Bool (1 byte)
+typedef uint8_t             BOOL;
+#define TRUE                1
+#define FALSE               0
 
 #endif

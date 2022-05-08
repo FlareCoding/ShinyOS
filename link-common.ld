@@ -9,6 +9,8 @@ INPUT
     kernel/Idt.o
     kernel/Interrupts.o
     kernel/SystemTimer.o
+    kernel/MemoryMap.o
+    kernel/MemoryHeap.o
 
     drivers/PortIo.o
     drivers/VGAScreenDriver.o

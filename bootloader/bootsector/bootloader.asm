@@ -3,7 +3,7 @@
 
 ; Offsets
 BOOTSECTOR_STACK_BOTTOM equ 0x8000
-SECTORS_TO_READ         equ 31
+SECTORS_TO_READ         equ 40
 KERNEL_LOADER_OFFSET    equ 0x8000
 
 section .text
@@ -59,6 +59,7 @@ call _BootloaderSwitchToProtectedMode
 jmp $
 
 _BootloaderSwitchToProtectedMode:
+    call _BootloaderLoadMemoryMap   ; load the memory table
     call _BootloaderEnableA20Line   ; enable A20 address line
     cli                             ; disable interrupts
     lgdt [GDT_DESCRIPTOR]           ; load the GDT descriptor
@@ -80,6 +81,7 @@ BOOT_DRIVE db 0
 %include "bootloader/bootsector/bootloader_print_utils.asm"
 %include "bootloader/bootsector/bootloader_disk_utils.asm"
 %include "bootloader/bootsector/bootloader_gdt.asm"
+%include "bootloader/bootsector/bootloader_memory_map.asm"
 
 ; -------------------------------------------------------------------
 ; -------------------------------------------------------------------

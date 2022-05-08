@@ -1,7 +1,7 @@
 ; Protected Mode <=> PM
 [bits 32]
 
-KERNEL_STACK_LOCATION equ 0x80000
+KERNEL_STACK_LOCATION equ 0x20000
 
 _PMInit:
     mov ax, DATA_SEG ; Update the segment registers
@@ -17,9 +17,6 @@ _PMInit:
     jmp _PMStart
 
 _PMStart:
-    mov esi, PROTECTED_MODE_ENTERED_MSG
-    call _PMPrintString
-
     ; Detect CPUID instruction and check
     ; if long mode is available.
     call _PMDetectCpuid
@@ -36,8 +33,6 @@ _PMStart:
 
     ; Enter long mode
     jmp CODE_SEG:_LMStart
-
-PROTECTED_MODE_ENTERED_MSG db 'Entered protected mode (32bits)', 0
 
 %include "bootloader/bootsector/bootloader_print_utils.asm"
 %include "bootloader/bootsector/bootloader_gdt.asm"

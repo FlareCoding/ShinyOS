@@ -91,34 +91,4 @@ _BIOSPrintHex:
 HEX_OUT:
     db '0x0000', 0 ; reserve memory for our new string
 
-
-; Protected Mode <=> PM
-[bits 32]
-
-VGA_MEMORY_ADDRESS          equ 0xb8000
-VGA_COLOR_BLACK_ON_WHITE    equ 0xF
-
-;
-; Expected Parameters:
-;       esi -> pointer to a string
-_PMPrintString:
-    pusha
-    mov edx, VGA_MEMORY_ADDRESS
-
-.next_char:
-    mov al, byte [esi]                  ; get the current character
-    mov ah, VGA_COLOR_BLACK_ON_WHITE    ; assign the color
-
-    cmp al, 0           ; check if null terminator was hit
-    je .done            ; break out of the loop
-
-    mov word [edx], ax  ; write the character and color into VGA memory
-    inc esi             ; move to the next character
-    add edx, 2          ; move to the next slot in VGA memory
-
-    jmp .next_char
-
-.done:
-    popa
-    ret
     
