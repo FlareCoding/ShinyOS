@@ -2,6 +2,10 @@
 #define INTERRUPTS_H
 #include "typedefs.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define TRAP_GATE_FLAGS             0x8F    // P = 1, DPL = 00, S = 0, Type = 1111 (32bit trap gate)
 #define INTERRUPT_GATE_FLAGS        0x8E    // P = 1, DPL = 00, S = 0, Type = 1110 (32bit interrupt gate)
 #define INTERRUPT_GATE_USER_FLAGS   0xEE    // P = 1, DPL = 11, S = 0, Type = 1110 (32bit interrupt gate called from privilege level 3)
@@ -25,9 +29,9 @@ typedef struct {
 } __attribute__((packed)) Idtr_t;
 
 __attribute__((aligned(0x10)))
-static IdtEntry_t g_idt[256]; // Create an array of IDT entries; aligned for performance
+extern IdtEntry_t g_idt[256]; // Create an array of IDT entries; aligned for performance
 
-static Idtr_t g_idtr;
+extern Idtr_t g_idtr;
 
 typedef struct {
     uint64_t ds;
@@ -131,5 +135,9 @@ __attribute__((interrupt)) void kIrq15(NakedInterruptFrame_t* frame);
 #define ICW4_8086           0x01
 
 void kRemapPIC();
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

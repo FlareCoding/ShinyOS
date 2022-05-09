@@ -97,7 +97,7 @@ void* kMemoryAllocWithAlignment(MemoryHeap_t* heap, uint64_t size, uint64_t alig
 
             // Do the same check as above for the next segment
             // and update its previous free segment pointer.
-            if (current_segment->NextSegment != NULL);
+            if (current_segment->NextSegment != NULL)
                 current_segment->NextSegment->PrevFreeSegment = current_segment->PrevFreeSegment;
 
             // Return the next available memory segment
@@ -187,7 +187,7 @@ void kFreeMemory(MemoryHeap_t* heap, void* ptr)
     MemorySegmentHeader_t* current_segment = (MemorySegmentHeader_t*)((uint64_t)ptr - sizeof(MemorySegmentHeader_t));
 
     // Mark the current segment as free
-    current_segment->Free;
+    current_segment->Free = TRUE;
 
     // If the heap's first free segment has a higher address than the
     // current memory segment, then replace it with the current segment.

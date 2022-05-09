@@ -3,8 +3,11 @@
 
 UserIrqHandler_t g_UserIrqHandlers[16];
 
+IdtEntry_t g_idt[256];
+Idtr_t g_idtr;
+
 /* To print the message which defines every exception */
-char* g_CPUExceptionMessages[] = {
+const char* g_CPUExceptionMessages[] = {
     "Division By Zero",
     "Debug",
     "Non Maskable Interrupt",
@@ -119,57 +122,57 @@ void kInitializeIDT()
     g_idtr.size    = (uint16_t)(sizeof(IdtEntry_t) * 256 - 1);
     g_idtr.address = (uint64_t)&g_idt;
 
-    kSetIsrHandler(0,  isr0,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(1,  isr1,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(2,  isr2,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(3,  isr3,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(4,  isr4,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(5,  isr5,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(6,  isr6,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(7,  isr7,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(8,  isr8,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(9,  isr9,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(10, isr10, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(11, isr11, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(12, isr12, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(13, isr13, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(14, isr14, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(15, isr15, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(16, isr16, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(17, isr17, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(18, isr18, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(19, isr19, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(20, isr20, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(21, isr21, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(22, isr22, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(23, isr23, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(24, isr24, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(25, isr25, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(26, isr26, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(27, isr27, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(28, isr28, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(29, isr29, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(30, isr30, INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(31, isr31, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(0,  (void*) isr0,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(1,  (void*) isr1,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(2,  (void*) isr2,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(3,  (void*) isr3,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(4,  (void*) isr4,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(5,  (void*) isr5,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(6,  (void*) isr6,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(7,  (void*) isr7,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(8,  (void*) isr8,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(9,  (void*) isr9,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(10, (void*) isr10, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(11, (void*) isr11, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(12, (void*) isr12, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(13, (void*) isr13, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(14, (void*) isr14, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(15, (void*) isr15, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(16, (void*) isr16, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(17, (void*) isr17, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(18, (void*) isr18, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(19, (void*) isr19, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(20, (void*) isr20, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(21, (void*) isr21, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(22, (void*) isr22, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(23, (void*) isr23, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(24, (void*) isr24, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(25, (void*) isr25, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(26, (void*) isr26, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(27, (void*) isr27, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(28, (void*) isr28, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(29, (void*) isr29, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(30, (void*) isr30, INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(31, (void*) isr31, INTERRUPT_GATE_FLAGS);
 
     kRemapPIC();
 
-    kSetIsrHandler(IRQ0,  kIrq0,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ1,  kIrq1,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ2,  kIrq2,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ3,  kIrq3,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ4,  kIrq4,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ5,  kIrq5,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ6,  kIrq6,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ7,  kIrq7,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ8,  kIrq8,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ9,  kIrq9,   INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ10, kIrq10,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ11, kIrq11,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ12, kIrq12,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ13, kIrq13,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ14, kIrq14,  INTERRUPT_GATE_FLAGS);
-    kSetIsrHandler(IRQ15, kIrq15,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ0,  (void*)kIrq0,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ1,  (void*)kIrq1,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ2,  (void*)kIrq2,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ3,  (void*)kIrq3,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ4,  (void*)kIrq4,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ5,  (void*)kIrq5,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ6,  (void*)kIrq6,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ7,  (void*)kIrq7,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ8,  (void*)kIrq8,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ9,  (void*)kIrq9,   INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ10, (void*)kIrq10,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ11, (void*)kIrq11,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ12, (void*)kIrq12,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ13, (void*)kIrq13,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ14, (void*)kIrq14,  INTERRUPT_GATE_FLAGS);
+    kSetIsrHandler(IRQ15, (void*)kIrq15,  INTERRUPT_GATE_FLAGS);
 
     asm volatile ("lidt %0" : : "memory"(g_idtr));
     asm volatile ("sti");

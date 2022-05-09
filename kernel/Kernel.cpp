@@ -6,7 +6,7 @@
 
 void _KeyboardEventCallbackHandler(KbdEvent_t evt);
 
-void _kmain() {
+extern "C" void _kmain() {
     // Calculate the number of memory
     // regions available to the kernel.
     kCalculateMemoryMapRegions();
@@ -36,21 +36,13 @@ void _kmain() {
 
     MemoryHeap_t heap = kCreateHeap(0x100000, 0x10000);
 
-    void* test_addy = kMemoryAlloc(&heap, 0x10);
+    uint8_t* test_addy = (uint8_t*)kMemoryAlloc(&heap, sizeof(uint8_t));
     kPrintHex((uint64_t)test_addy); kPrint("\n");
 
-    void* test_addy2 = kMemoryAlloc(&heap, 0x10);
-    kPrintHex((uint64_t)test_addy2); kPrint("\n");
+    *test_addy = 45;
 
-    void* test_addy3 = kMemoryAlloc(&heap, 0x10);
-    kPrintHex((uint64_t)test_addy3); kPrint("\n");
-
-    //kFreeMemory(&heap, test_addy);
-    kFreeMemory(&heap, test_addy2);
-    //kFreeMemory(&heap, test_addy3);
-
-    void* test_addy4 = kMemoryAlloc(&heap, 0x10);
-    kPrintHex((uint64_t)test_addy4); kPrint("\n");
+    kFreeMemory(&heap, test_addy);
+    kPrint("test: "); kPrintInt(*test_addy); kPrint("\n");
 }
 
 void _KeyboardEventCallbackHandler(KbdEvent_t evt)

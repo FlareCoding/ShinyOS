@@ -1,12 +1,18 @@
-CC = /usr/local/x86_64elfgcc/bin/x86_64-elf-gcc
-LD = /usr/local/x86_64elfgcc/bin/x86_64-elf-ld
+CC  = /usr/local/x86_64elfgcc/bin/x86_64-elf-gcc
+CXX = /usr/local/x86_64elfgcc/bin/x86_64-elf-g++
+LD  = /usr/local/x86_64elfgcc/bin/x86_64-elf-ld
 
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
-HEADERS = $(wildcard kernel/*.h drivers/*.h)
+C_SOURCES   = $(wildcard kernel/*.c drivers/*.c)
+CPP_SOURCES = $(wildcard kernel/*.cpp drivers/*.cpp)
+HEADERS     = $(wildcard kernel/*.h drivers/*.h)
 
-OBJ = ${C_SOURCES:.c=.o}
+OBJ_C = ${C_SOURCES:.c=.o}
+OBJ_CPP = ${CPP_SOURCES:.cpp=.o}
+OBJ = ${OBJ_C} ${OBJ_CPP}
 
 CFLAGS = -ffreestanding -mno-red-zone -m64 -g -I ./
+CXXFLAGS = -ffreestanding -mno-red-zone -m64 -g -I ./ -std=c++17 -Wall
+LXXFLAGS = -std=c++17
 
 KERNEL_OFFSET = 0x8000
 KERNEL_ENTRY = _kmain
@@ -32,11 +38,14 @@ kernel.elf: kernel_loader.o kernel/Interrupts.o ${OBJ}
 kernel_loader.o: bootloader/sector2/kernel_loader.asm
 	nasm $< -f elf64 -o $@
 
-kernel/Idt.o: kernel/Idt.c
-	${CC} ${CFLAGS} -mgeneral-regs-only -c $< -o $@
+kernel/Idt.o: kernel/Idt.cpp
+	${CXX} ${CXXFLAGS} ${LXXFLAGS} -mgeneral-regs-only -c $< -o $@
 
 %.o: kernel/%.c drivers/%.c ${HEADERS}
-	${CC} ${CFLAGS} -c $< -o $@
+	${C} ${CFLAGS} -c $< -o $@
+
+%.o: kernel/%.cpp drivers/%.cpp ${HEADERS}
+	${CXX} ${CXXFLAGS} ${LXXFLAGS} -c $< -o $@
 
 kernel/Interrupts.o: kernel/Interrupts.asm
 	nasm $< -f elf64 -o $@
