@@ -11,12 +11,12 @@
 #define KEYBOARD_EVENT_KEYPRESS   1
 #define KEYBOARD_EVENT_KEYRELEASE 2
 
-typedef struct
+struct KbdEvent_t
 {
     uint8_t EventType;
     uint8_t ScanCode;
     uint8_t CharValue;
-} KbdEvent_t;
+};
 
 // Called by the interrupt service routine
 void kHandleKeyboardInterrupt(NakedInterruptFrame_t* frame, uint8_t int_no);

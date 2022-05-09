@@ -2,22 +2,20 @@
 #define MEMORY_HEAP_H
 #include "typedefs.h"
 
-typedef struct MemorySegmentHeader MemorySegmentHeader_t;
-
-typedef struct MemorySegmentHeader {
+struct MemorySegmentHeader_t {
     uint64_t                Size;
     MemorySegmentHeader_t*  NextSegment;
     MemorySegmentHeader_t*  NextFreeSegment;
     MemorySegmentHeader_t*  PrevSegment;
     MemorySegmentHeader_t*  PrevFreeSegment;
     BOOL                    Free;
-} MemorySegmentHeader_t;
+};
 
-typedef struct MemoryHeap {
+struct MemoryHeap_t {
     MemorySegmentHeader_t*  FirstSegment;
     MemorySegmentHeader_t*  FirstFreeSegment;
     uint64_t                Size;
-} MemoryHeap_t;
+};
 
 // Sets up a free memory heap at the
 // specified address with the provided size.

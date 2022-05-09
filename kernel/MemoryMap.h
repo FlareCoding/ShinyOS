@@ -4,12 +4,12 @@
 
 #define MEMORY_MAP_ADDRESS 0x5000
 
-typedef struct {
+struct MemoryMapEntry_t {
     uint64_t RegionBase;
     uint64_t RegionSize;
     uint32_t RegionType;
     uint32_t ExtendedAttribs;
-} MemoryMapEntry_t;
+};
 
 // Calculates the number of regions in the memory map
 void kCalculateMemoryMapRegions();
