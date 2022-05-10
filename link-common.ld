@@ -11,6 +11,12 @@ INPUT
     kernel/SystemTimer.o
     kernel/MemoryMap.o
     kernel/MemoryHeap.o
+    
+    kernel/paging/PageBitmap.o
+    kernel/paging/Paging.o
+    kernel/paging/PageFrameAllocator.o
+    kernel/paging/PagingUtils.o
+    kernel/paging/PageTableManager.o
 
     drivers/PortIo.o
     drivers/VGAScreenDriver.o
@@ -20,6 +26,8 @@ INPUT
 SECTIONS
 {
     . = 0x8000;
+
+    _KernelAddressStart = .;
 
     .text : ALIGN(0x1000)
     {
@@ -41,4 +49,6 @@ SECTIONS
         *(COMMON)
         *(.bss)
     }
+
+    _KernelAddressEnd = .;
 }

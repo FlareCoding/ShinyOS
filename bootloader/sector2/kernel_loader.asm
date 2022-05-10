@@ -1,7 +1,7 @@
 ; Protected Mode <=> PM
 [bits 32]
 
-KERNEL_STACK_LOCATION equ 0x20000
+KERNEL_STACK_LOCATION equ 0x80000
 
 _PMInit:
     mov ax, DATA_SEG ; Update the segment registers

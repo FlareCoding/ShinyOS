@@ -3,7 +3,7 @@ CXX = /usr/local/x86_64elfgcc/bin/x86_64-elf-g++
 LD  = /usr/local/x86_64elfgcc/bin/x86_64-elf-ld
 
 C_SOURCES   = $(wildcard kernel/*.c drivers/*.c)
-CPP_SOURCES = $(wildcard kernel/*.cpp drivers/*.cpp)
+CPP_SOURCES = $(wildcard kernel/*.cpp drivers/*.cpp kernel/paging/*.cpp)
 HEADERS     = $(wildcard kernel/*.h drivers/*.h)
 
 OBJ_C = ${C_SOURCES:.c=.o}
@@ -44,11 +44,11 @@ kernel/Idt.o: kernel/Idt.cpp
 %.o: kernel/%.c drivers/%.c ${HEADERS}
 	${C} ${CFLAGS} -c $< -o $@
 
-%.o: kernel/%.cpp drivers/%.cpp ${HEADERS}
+%.o: kernel/%.cpp drivers/%.cpp kernel/paging/%.cpp ${HEADERS}
 	${CXX} ${CXXFLAGS} ${LXXFLAGS} -c $< -o $@
 
 kernel/Interrupts.o: kernel/Interrupts.asm
 	nasm $< -f elf64 -o $@
 
 clean:
-	rm -rf *.bin *.img *.elf *.o kernel/*.o drivers/*.o
+	rm -rf *.bin *.img *.elf *.o kernel/*.o kernel/*/*.o drivers/*.o drivers/*/*.o

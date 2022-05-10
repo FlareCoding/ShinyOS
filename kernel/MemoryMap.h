@@ -18,7 +18,14 @@ void kCalculateMemoryMapRegions();
 // available to be used by the kernel.
 MemoryMapEntry_t** kGetUsableMemoryRegions();
 
+// Returns the list of the reserved memory regions
+MemoryMapEntry_t** kGetReservedMemoryRegions();
+
+// Returns the total memory size recorded in the memory map
+uint64_t kGetTotalMemorySize();
+
 extern uint8_t _MemoryMapAvailableMemoryRegions;
 extern uint8_t _MemoryMapUsableMemoryRegions;
+extern uint8_t _MemoryMapReservedMemoryRegions;
 
 #endif

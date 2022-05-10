@@ -27,7 +27,7 @@ GDT_END:
 ; GDT descriptor
 GDT_DESCRIPTOR:
     dw GDT_END - GDT_START - 1 ; size (16 bit), always one less of its true size
-    dd GDT_START ; address (32 bit)
+    dq GDT_START ; address (32 bit)
 
 ; Constants
 CODE_SEG equ GDT_CODE - GDT_START
